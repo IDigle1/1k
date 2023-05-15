@@ -1,41 +1,48 @@
 <template>
-  <div class="player">
+  <div class="w-full player">
         <button class="close-button" @click="deletePlayer(index)"><i class="close-icon"></i></button>
-        <h2 class="player-name">{{player.name}}</h2>
+        <h2 class="player-name">{{ props.player.name }}</h2>
         <div class="display-scores">
-            <span class="scores">{{player.scores}}</span>
-            <span class="last-action">{{player.lastAction}}</span>
-            <span class="misses">{{player.misses}}</span>
+            <span class="rounded-sm scores">{{ props.player.scores }}</span>
+            <span class="rounded-sm last-action">{{ props.player.lastAction }}</span>
+            <span class="rounded-sm misses">{{ props.player.misses }}</span>
         </div>
         <div class="input-group">
-            <input type="text" placeholder="Введите очки" v-model="action">
-            <button class="change-account" @click="changeAccount(index)">Изменить</button>
+            <input class="rounded-sm" type="text" placeholder="Введите очки" @input="setAction">
+            <button class="bg-red-500 text-white border-0 px-2 py-1 rounded" @click="changeAccount(index)">Изменить</button>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-  name: 'Player',
-  props: {
-        player: Object,
-        index: Number
-  },
-  data() {
-        return {
-            action: ''
-        }
-  },
-  methods: {
-        deletePlayer(index) {
-            this.$emit('delete-player', index);
-        },
-        changeAccount(index) {
-            this.$emit('change-account', index, this.action);
-            this.action = '';
-        }
-  }
-}
+<script lang="ts" setup>
+    import { Ref, ref, defineEmits } from 'vue';
+    import { Player } from '../types/playerTypes';
+
+    const props = defineProps<{
+        player: Player,
+        index: number
+    }>()
+
+    const emit = defineEmits(['deletePlayer', 'changeAccount'])
+
+    const action: Ref<number> = ref(0)
+
+    function deletePlayer(index: number) {
+        emit('deletePlayer', index)
+    }
+
+    function changeAccount(index: number) {
+        emit('changeAccount', index, action.value)
+
+        action.value = 0
+    }
+
+    function setAction(event: Event) {
+        const value = (event.target as HTMLInputElement)?.value
+        if (!value) return
+
+        action.value = +value
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -47,7 +54,6 @@ export default {
         background: #fff;
         box-sizing: border-box;
         padding: 12px;
-        margin: 10px 0;
         border: 1px solid #e5e5e5;
         .close-button {
             background: none;
@@ -108,16 +114,9 @@ export default {
                 padding-left: 10px;
                 margin-right: 5px;
                 outline: none;
-                border-radius: 0;
                 flex-grow: 1;
                 border: 1px solid #d7d7d7;
                 background: #f3f3f3;
-            }
-            .change-account {
-                padding: 5px 10px;
-                border: 0;
-                color: #fff;
-                background: $red;
             }
         }
     }

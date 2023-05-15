@@ -1,92 +1,38 @@
 <template>
-  <div id="app">
-    <div class="container">
+  <div class="grid h-screen">
+    <v-header />
+
+    <sidebar />
+
+    <div class="container max-h-full pt-12 pb-16">
+      <div class="min-h-full h-full p-3 overflow-auto">
         <players-list 
-        :players="players" 
-        @delete-player="deletePlayer" 
-        @change-account="changeAccount" />
+          v-if="playersStore.players.length"
+          :players="playersStore.players" 
+          @delete-player="playersStore.deletePlayer" 
+          @change-account="playersStore.changeAccount" 
+        />
+
+        <players-placeholder v-if="!playersStore.players.length" />
+      </div>
     </div>
-    <add-player @add-player="addPlayer"></add-player>
+
+    <div class="container fixed left-0 right-0 bottom-0 p-3 bg-white shadow shadow-slate-500">
+      <add-player @add-player="playersStore.addPlayer" />
+    </div>
   </div>
 </template>
 
-<script>
-import PlayersList from './components/PlayersList.vue';
-import AddPlayer from './components/AddPlayer.vue';
+<script lang="ts" setup>
+  import PlayersList from './components/PlayersList.vue';
+  import PlayersPlaceholder from './components/PlayersPlaceholder.vue';
+  import AddPlayer from './components/AddPlayer.vue';
+  import { usePlayersStore } from './stores/players'
+  import VHeader from './components/VHeader.vue';
+  import Sidebar from './components/Sidebar.vue';
 
-export default {
-    name: 'App',
-    components: {
-        "players-list": PlayersList,
-        "add-player": AddPlayer
-    },
-    data() {
-        return {
-            players: []
-        }
-    },
-    beforeMount() {
-        if(!localStorage.getItem('players')) {
-            localStorage.setItem('players', "[]");
-            return;
-        }
-
-        let loadedPlayersData = JSON.parse(localStorage.getItem('players'));
-
-        this.players = loadedPlayersData;
-    },
-    watch: {
-        players: {
-            handler: function() {
-                let savedData = JSON.stringify(this.players);
-                localStorage.setItem('players', savedData);
-            },
-            deep: true
-        }
-    },
-    methods: {
-        addPlayer() {
-            let playerName = prompt('Введите имя игрока');
-
-            this.players.push({
-                name: playerName,
-                scores: 0,
-                lastAction: '-',
-                misses: 0
-            });
-
-            this.saveData();
-        },
-        deletePlayer(index) {
-            this.players.splice(index, 1);
-            this.saveData();
-        },
-        changeAccount(index, action) {
-            console.log(index, action);
-            if (+action === 0) {
-                if (this.players[index].misses < 2) {
-                    this.players[index].misses++;
-                    this.players[index].lastAction = 'Болт';
-                } else {
-                    this.players[index].misses = 0;
-                    this.players[index].scores += -120;
-                    this.players[index].lastAction = '-120';
-                }
-
-                return;
-            } 
-            
-            if (+action >= 0 || +action <= 0) {
-                this.players[index].scores += +action;
-                this.players[index].lastAction = (action > 0) ? (`+${action}`) : action;
-            }
-            
-        }
-    }
-}
+  const playersStore = usePlayersStore()
 </script>
 
-<style lang="scss">
-    
-
+<style scoped>
 </style>
