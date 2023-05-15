@@ -14,13 +14,11 @@
     import { Player } from '../types/playerTypes';
     import PlayerComponent from './Player.vue';
 
-    interface Props {
-        players: Player[]
-    }
-
     const emit = defineEmits(['deletePlayer', 'changeAccount'])
 
-    const props = defineProps<Props>()
+    const props = defineProps<{
+        players: Player[]
+    }>()
 
     function deletePlayer(index: number) {
         emit('deletePlayer', index);

@@ -8,7 +8,7 @@
             <span class="misses">{{ props.player.misses }}</span>
         </div>
         <div class="input-group">
-            <input type="text" placeholder="Введите очки" v-model="action">
+            <input type="text" placeholder="Введите очки" @input="setAction">
             <button class="change-account" @click="changeAccount(index)">Изменить</button>
         </div>
     </div>
@@ -18,25 +18,30 @@
     import { Ref, ref, defineEmits } from 'vue';
     import { Player } from '../types/playerTypes';
 
-    interface Props {
+    const props = defineProps<{
         player: Player,
         index: number
-    }
-
-    const props = defineProps<Props>()
+    }>()
 
     const emit = defineEmits(['deletePlayer', 'changeAccount'])
 
-    const action: Ref<string | number> = ref('')
+    const action: Ref<number> = ref(0)
 
     function deletePlayer(index: number) {
         emit('deletePlayer', index)
     }
 
     function changeAccount(index: number) {
-        emit('changeAccount', index, action)
+        emit('changeAccount', index, action.value)
 
-        action.value = ''
+        action.value = 0
+    }
+
+    function setAction(event: Event) {
+        const value = (event.target as HTMLInputElement)?.value
+        if (!value) return
+
+        action.value = +value
     }
 </script>
 

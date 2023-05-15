@@ -21,7 +21,7 @@ export const usePlayersStore = defineStore('usePlayersStore', () => {
     }
 
     function savePlayers() {
-        localStorage.setItem('players', JSON.stringify(players))
+        localStorage.setItem('players', JSON.stringify(players.value))
     }
 
     function deletePlayer(index: number) {
@@ -29,9 +29,10 @@ export const usePlayersStore = defineStore('usePlayersStore', () => {
     }
 
     function changeAccount(index: number, action: number) {
+
         if (action === 0) {
             if (players.value[index].misses < 2) {
-                players.value[index].misses++;
+                players.value[index].misses += 1;
                 players.value[index].lastAction = 'Болт';
             } else {
                 players.value[index].misses = 0;
@@ -43,7 +44,7 @@ export const usePlayersStore = defineStore('usePlayersStore', () => {
         } 
         
         if (action >= 0 || action <= 0) {
-            players.value[index].scores += action;
+            players.value[index].scores += Number(action);
             players.value[index].lastAction = (action > 0) ? (`+${action}`) : action;
         }
         
