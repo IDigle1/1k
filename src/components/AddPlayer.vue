@@ -5,14 +5,13 @@
     
 </template>
 
-<script>
-export default {
-    props: [],
-    methods: {
-        addPlayer() {
-            this.$emit('add-player');
-        }
-    }
+<script lang="ts" setup> 
+import { defineEmits } from 'vue'
+
+const emit = defineEmits(['addPlayer'])
+
+function addPlayer() {
+    emit('addPlayer')
 }
 </script>
 

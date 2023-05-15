@@ -1,11 +1,11 @@
 <template>
   <div class="player">
         <button class="close-button" @click="deletePlayer(index)"><i class="close-icon"></i></button>
-        <h2 class="player-name">{{player.name}}</h2>
+        <h2 class="player-name">{{ props.player.name }}</h2>
         <div class="display-scores">
-            <span class="scores">{{player.scores}}</span>
-            <span class="last-action">{{player.lastAction}}</span>
-            <span class="misses">{{player.misses}}</span>
+            <span class="scores">{{ props.player.scores }}</span>
+            <span class="last-action">{{ props.player.lastAction }}</span>
+            <span class="misses">{{ props.player.misses }}</span>
         </div>
         <div class="input-group">
             <input type="text" placeholder="Введите очки" v-model="action">
@@ -14,28 +14,30 @@
     </div>
 </template>
 
-<script>
-export default {
-  name: 'Player',
-  props: {
-        player: Object,
-        index: Number
-  },
-  data() {
-        return {
-            action: ''
-        }
-  },
-  methods: {
-        deletePlayer(index) {
-            this.$emit('delete-player', index);
-        },
-        changeAccount(index) {
-            this.$emit('change-account', index, this.action);
-            this.action = '';
-        }
-  }
-}
+<script lang="ts" setup>
+    import { Ref, ref, defineEmits } from 'vue';
+    import { Player } from '../types/playerTypes';
+
+    interface Props {
+        player: Player,
+        index: number
+    }
+
+    const props = defineProps<Props>()
+
+    const emit = defineEmits(['deletePlayer', 'changeAccount'])
+
+    const action: Ref<string | number> = ref('')
+
+    function deletePlayer(index: number) {
+        emit('deletePlayer', index)
+    }
+
+    function changeAccount(index: number) {
+        emit('changeAccount', index, action)
+
+        action.value = ''
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
