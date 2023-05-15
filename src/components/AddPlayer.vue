@@ -1,8 +1,10 @@
 <template>
-    <div class="button-group">
-        <a type="button" @click.prevent="addPlayer" class="add-player">Добавить игрока</a>
-    </div>
-    
+    <button 
+        class="block text-center w-full bg-red-600 px-4 py-2 text-white shadow-sm rounded cursor-pointer"
+        @click.prevent="addPlayer"
+    >
+        Добавить игрока
+    </button>
 </template>
 
 <script lang="ts" setup> 

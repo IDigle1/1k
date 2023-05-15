@@ -1,5 +1,5 @@
 <template>
-    <div class="players-list" >
+    <div class="grid grid-rows-1 gap-3 overflow-auto" >
         <player-component 
             v-for="(player, index) in props.players" 
             :key="index"
@@ -31,9 +31,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-    .players-list {
-        max-height: calc(100vh - 60px);
-        padding: 10px;
-        overflow: auto;
-    }
 </style>

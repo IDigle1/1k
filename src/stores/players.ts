@@ -10,7 +10,7 @@ export const usePlayersStore = defineStore('usePlayersStore', () => {
     watch(players, () => savePlayers(), { deep: true} )
 
     function addPlayer() {
-        let playerName = prompt('Введите имя игрока') || 'Игрок';
+        let playerName = prompt('Введите имя игрока') || `Игрок ${ players.value.length + 1 }`;
 
         players.value.push({
             name: playerName,
