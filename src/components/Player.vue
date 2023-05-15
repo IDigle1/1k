@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { Ref, ref, defineEmits } from 'vue';
+    import { Ref, ref } from 'vue';
     import { Player } from '../types/playerTypes';
 
     const props = defineProps<{

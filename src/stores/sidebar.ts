@@ -1,4 +1,4 @@
-import { ref, Ref, watch } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useSidebarStore = defineStore('useSidebarStore', () => {

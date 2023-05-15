@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts" setup>
-    import { defineProps, defineEmits } from 'vue'
     import { Player } from '../types/playerTypes';
     import PlayerComponent from './Player.vue';
 
