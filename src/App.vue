@@ -4,7 +4,7 @@
 
     <sidebar />
 
-    <div class="container max-h-full pt-12 pb-16">
+    <div class="container max-h-screen pt-12 pb-16">
       <div class="min-h-full h-full p-3 overflow-auto">
         <players-list 
           v-if="playersStore.players.length"
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="container fixed left-0 right-0 bottom-0 p-3 bg-white shadow shadow-slate-500">
+    <div class="container absolute left-0 right-0 bottom-0 p-3 bg-white shadow shadow-slate-500">
       <add-player @add-player="playersStore.addPlayer" />
     </div>
   </div>
